@@ -1,0 +1,19 @@
+version: '3.1'
+
+services:
+  db:
+    container_name: db-spring-webflux
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+      PGDATA: /data/postgres
+    volumes:
+      - db-spring-webflux:/data/postgres
+    ports:
+      - "5432:5432"
+    restart: always
+
+volumes:
+  db-spring-webflux:
