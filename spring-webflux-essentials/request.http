@@ -18,14 +18,126 @@ client.test("Request executed successfully", function() {
 });
 %}
 
-
-
 ### find anime by id with erro response
-GET http://localhost:8080/animes/2
+GET http://localhost:8080/animes/99
 Accept: application/json
 
 > {%
 client.test("Request executed successfully", function() {
-  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.status === 404, "Response status is not 200");
+});
+%}
+
+### Save anime
+POST http://localhost:8080/animes/
+Content-Type: application/json
+
+{
+  "name": "Boruto"
+}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 201, "Response status is not 201");
+});
+%}
+
+### Update anime
+PUT http://localhost:8080/animes/3
+Content-Type: application/json
+
+{
+  "name": "Dragon Ball Super"
+}
+
+> {%
+client.test("Request executed successfully", function() {
+client.assert(response.status === 204, "Response status is not 204");
+});
+%}
+
+### Update anime not found
+PUT http://localhost:8080/animes/99
+Content-Type: application/json
+
+{
+  "name": "Dragon Ball"
+}
+
+> {%
+client.test("Request executed successfully", function() {
+client.assert(response.status === 404, "Response status is not 404");
+});
+%}
+
+
+### Update anime name is empty
+PUT http://localhost:8080/animes/3
+Content-Type: application/json
+
+{
+  "name" : ""
+}
+
+> {%
+client.test("Request executed successfully", function() {
+client.assert(response.status === 400, "Response status is not 400");
+});
+%}
+
+### Update anime name is empty
+DELETE http://localhost:8080/animes/2
+
+> {%
+client.test("Request executed successfully", function() {
+client.assert(response.status === 204, "Response status is not 204");
+});
+%}
+
+### Update anime name is empty
+DELETE http://localhost:8080/animes/99
+
+> {%
+client.test("Request executed successfully", function() {
+client.assert(response.status === 404, "Response status is not 404");
+});
+%}
+
+
+### Save anime batch
+POST http://localhost:8080/animes/batch
+Content-Type: application/json
+
+[
+{
+  "name": "One Punch Man"
+},
+{
+  "name": "Naruto Shippunden"
+}
+]
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 201, "Response status is not 201");
+});
+%}
+
+### Save anime batch with error
+POST http://localhost:8080/animes/batch
+Content-Type: application/json
+
+[
+  {
+    "name": "One Punch Man"
+  },
+  {
+    "name": ""
+  }
+]
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 400, "Response status is not 400");
 });
 %}

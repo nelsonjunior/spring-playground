@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 @With
 @Table("anime")
