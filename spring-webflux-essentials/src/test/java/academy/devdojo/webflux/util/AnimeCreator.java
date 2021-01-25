@@ -4,7 +4,7 @@ import academy.devdojo.webflux.domain.Anime;
 
 public class AnimeCreator {
 
-    public static Anime createAnimeBeToSaved(){
+    public static Anime createAnimeToBeSaved(){
         return Anime.builder()
                 .name("Dragon Ball")
                 .build();

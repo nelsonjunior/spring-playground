@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.util.List;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +30,7 @@ class AnimeControllerTest {
     @Mock
     private AnimeService animeServiceMock;
 
-    private final Anime anime = AnimeCreator.createAnimeBeToSaved();
+    private final Anime anime = AnimeCreator.createAnimeToBeSaved();
 
     @BeforeAll
     public static void blockHoundSetup(){
@@ -60,8 +61,11 @@ class AnimeControllerTest {
         BDDMockito.when(animeServiceMock.findById(ArgumentMatchers.anyInt()))
                 .thenReturn(Mono.just(anime));
 
-        BDDMockito.when(animeServiceMock.save(AnimeCreator.createAnimeBeToSaved()))
+        BDDMockito.when(animeServiceMock.save(AnimeCreator.createAnimeToBeSaved()))
                 .thenReturn(Mono.just(anime));
+
+        BDDMockito.when(animeServiceMock.saveAll(List.of(AnimeCreator.createAnimeToBeSaved(), AnimeCreator.createAnimeToBeSaved())))
+                .thenReturn(Flux.just(anime, anime));
 
         BDDMockito.when(animeServiceMock.delete(ArgumentMatchers.anyInt()))
                 .thenReturn(Mono.empty());
@@ -92,11 +96,23 @@ class AnimeControllerTest {
     @DisplayName("save creates an anime when successful")
     public void save_CreatesAnime_WhenSuccessful(){
 
-        Anime animeBeToSaved = AnimeCreator.createAnimeBeToSaved();
+        Anime animeBeToSaved = AnimeCreator.createAnimeToBeSaved();
 
         StepVerifier.create(animeController.save(animeBeToSaved))
                 .expectSubscription()
                 .expectNext(anime)
+                .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("saveAll creates a list of anime when successful")
+    public void saveAll_CreatesListOfAnimes_WhenSuccessful(){
+
+        Anime animeBeToSaved = AnimeCreator.createAnimeToBeSaved();
+
+        StepVerifier.create(animeController.saveBatch(List.of(animeBeToSaved, animeBeToSaved)))
+                .expectSubscription()
+                .expectNext(anime, anime)
                 .verifyComplete();
     }
 
@@ -117,6 +133,5 @@ class AnimeControllerTest {
                 .expectSubscription()
                 .verifyComplete();
     }
-
-
+    
 }

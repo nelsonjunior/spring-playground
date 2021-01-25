@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.util.List;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
@@ -30,7 +31,7 @@ class AnimeServiceTest {
     @Mock
     private AnimeRepository animeRepository;
 
-    private final Anime anime = AnimeCreator.createAnimeBeToSaved();
+    private final Anime anime = AnimeCreator.createAnimeToBeSaved();
 
     @BeforeAll
     public static void blockHoundSetup(){
@@ -61,8 +62,11 @@ class AnimeServiceTest {
         BDDMockito.when(animeRepository.findById(ArgumentMatchers.anyInt()))
                 .thenReturn(Mono.just(anime));
 
-        BDDMockito.when(animeRepository.save(AnimeCreator.createAnimeBeToSaved()))
+        BDDMockito.when(animeRepository.save(AnimeCreator.createAnimeToBeSaved()))
                 .thenReturn(Mono.just(anime));
+
+        BDDMockito.when(animeRepository.saveAll(List.of(AnimeCreator.createAnimeToBeSaved(), AnimeCreator.createAnimeToBeSaved())))
+                .thenReturn(Flux.just(anime, anime));
 
         BDDMockito.when(animeRepository.delete(ArgumentMatchers.any(Anime.class)))
                 .thenReturn(Mono.empty());
@@ -106,12 +110,43 @@ class AnimeServiceTest {
     @DisplayName("save creates an anime when successful")
     public void save_CreatesAnime_WhenSuccessful(){
 
-        Anime animeBeToSaved = AnimeCreator.createAnimeBeToSaved();
+        Anime animeBeToSaved = AnimeCreator.createAnimeToBeSaved();
 
         StepVerifier.create(animeService.save(animeBeToSaved))
                 .expectSubscription()
                 .expectNext(anime)
                 .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("saveAll creates a list of anime when successful")
+    public void saveAll_CreatesListOfAnimes_WhenSuccessful(){
+
+        Anime animeBeToSaved = AnimeCreator.createAnimeToBeSaved();
+
+        StepVerifier.create(animeService.saveAll(List.of(animeBeToSaved, animeBeToSaved)))
+                .expectSubscription()
+                .expectNext(anime, anime)
+                .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("saveAll returns Mono error when of the objects in the list contains null or empty name")
+    public void saveAll_ReturnsMonoErro_WhenContainsInvalidName(){
+
+        Anime animeBeToSaved = AnimeCreator.createAnimeToBeSaved();
+
+        Anime animeEmptyName = animeBeToSaved.withName("");
+
+        BDDMockito.when(animeRepository.saveAll(ArgumentMatchers.anyIterable()))
+                .thenReturn(Flux.just(anime, animeEmptyName));
+
+
+        StepVerifier.create(animeService.saveAll(List.of(animeBeToSaved, animeEmptyName)))
+                .expectSubscription()
+                .expectNext(this.anime)
+                .expectError(ResponseStatusException.class)
+                .verify();
     }
 
     @Test
