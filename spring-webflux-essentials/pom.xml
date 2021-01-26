@@ -18,8 +18,14 @@
         <blockhound.version>1.0.4.RELEASE</blockhound.version>
         <r2dbc-postgresql.version>0.8.6.RELEASE</r2dbc-postgresql.version>
         <spring-boot-starter-validation.version>2.4.0</spring-boot-starter-validation.version>
+        <springdoc-openapi-webflux-ui.version>1.5.2</springdoc-openapi-webflux-ui.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-webflux-ui</artifactId>
+            <version>${springdoc-openapi-webflux-ui.version}</version>
+        </dependency>
         <dependency>
             <groupId>io.projectreactor.tools</groupId>
             <artifactId>blockhound</artifactId>
@@ -33,6 +39,10 @@
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-tools</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -68,6 +78,10 @@
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
         </dependency>
     </dependencies>
 

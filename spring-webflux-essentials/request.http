@@ -1,6 +1,7 @@
 ### List all animes
 GET http://localhost:8080/animes
 Accept: application/json
+Authorization: Basic nelson devdojo
 
 > {%
 client.test("Request executed successfully", function() {
@@ -11,6 +12,7 @@ client.test("Request executed successfully", function() {
 ### find anime by id
 GET http://localhost:8080/animes/1
 Accept: application/json
+Authorization: Basic user devdojo
 
 > {%
 client.test("Request executed successfully", function() {
@@ -21,6 +23,7 @@ client.test("Request executed successfully", function() {
 ### find anime by id with erro response
 GET http://localhost:8080/animes/99
 Accept: application/json
+Authorization: Basic user devdojo
 
 > {%
 client.test("Request executed successfully", function() {
@@ -31,6 +34,7 @@ client.test("Request executed successfully", function() {
 ### Save anime
 POST http://localhost:8080/animes/
 Content-Type: application/json
+Authorization: Basic nelson devdojo
 
 {
   "name": "Boruto"
@@ -43,8 +47,9 @@ client.test("Request executed successfully", function() {
 %}
 
 ### Update anime
-PUT http://localhost:8080/animes/3
+PUT http://localhost:8080/animes/2
 Content-Type: application/json
+Authorization: Basic nelson devdojo
 
 {
   "name": "Dragon Ball Super"
@@ -59,6 +64,7 @@ client.assert(response.status === 204, "Response status is not 204");
 ### Update anime not found
 PUT http://localhost:8080/animes/99
 Content-Type: application/json
+Authorization: Basic nelson devdojo
 
 {
   "name": "Dragon Ball"
@@ -74,6 +80,7 @@ client.assert(response.status === 404, "Response status is not 404");
 ### Update anime name is empty
 PUT http://localhost:8080/animes/3
 Content-Type: application/json
+Authorization: Basic nelson devdojo
 
 {
   "name" : ""
@@ -86,7 +93,9 @@ client.assert(response.status === 400, "Response status is not 400");
 %}
 
 ### Update anime name is empty
-DELETE http://localhost:8080/animes/2
+DELETE http://localhost:8080/animes/1
+Authorization: Basic nelson devdojo
+
 
 > {%
 client.test("Request executed successfully", function() {
@@ -96,6 +105,7 @@ client.assert(response.status === 204, "Response status is not 204");
 
 ### Update anime name is empty
 DELETE http://localhost:8080/animes/99
+Authorization: Basic nelson devdojo
 
 > {%
 client.test("Request executed successfully", function() {
@@ -107,6 +117,7 @@ client.assert(response.status === 404, "Response status is not 404");
 ### Save anime batch
 POST http://localhost:8080/animes/batch
 Content-Type: application/json
+Authorization: Basic nelson devdojo
 
 [
 {
@@ -126,6 +137,7 @@ client.test("Request executed successfully", function() {
 ### Save anime batch with error
 POST http://localhost:8080/animes/batch
 Content-Type: application/json
+Authorization: Basic nelson devdojo
 
 [
   {
