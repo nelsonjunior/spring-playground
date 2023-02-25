@@ -41,9 +41,7 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 
-//    implementation("io.grpc:grpc-protobuf:${grpcVersion}")
-//    implementation("io.grpc:grpc-stub:1.40.1")
-//    implementation("io.grpc:grpc-kotlin-stub:1.1.0")
+
     implementation "net.devh:grpc-client-spring-boot-starter:$grpeSpringstarter"
 
 
@@ -69,14 +67,10 @@ protobuf {
         grpc {
             artifact = "io.grpc:protoc-gen-grpc-java:1.37.0"
         }
-//        grpckt {
-//            artifact = "io.grpc:protoc-gen-grpc-kotlin:${grpcKotlinVersion}:jdk7@jar"
-//        }
     }
     generateProtoTasks {
         all()*.plugins {
             grpc {}
-//            grpckt {}
         }
     }
 }
