@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option java_package = "br.com.nrsjnet";
+option java_multiple_files = true;
+
+package br.com.nrsjnet;
+
+service ProductService {
+  rpc Create (ProductRequest) returns (ProductResponse);
+  rpc FindByID (IdRequest) returns (ProductResponse);
+  rpc Delete (IdRequest) returns (EmptyRespose);
+  rpc FindAll (EmptyRequest) returns (ListProductResponse);
+}
+
+message EmptyRequest {}
+
+message EmptyRespose {}
+
+message IdRequest {
+  string id = 1;
+}
+
+message ProductRequest {
+  string name = 1;
+  double price = 2;
+  int32 quantity_in_stock = 3;
+}
+
+message ProductResponse {
+  string id = 1;
+  string name = 2;
+  double price = 3;
+  int32 quantity_in_stock = 4;
+}
+
+message ListProductResponse {
+  repeated ProductResponse products = 1;
+}
+

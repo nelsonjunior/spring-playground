@@ -1,0 +1,16 @@
+
+server:
+  port: 8081
+
+
+grpc:
+  client:
+    product-grpc-service:
+      address: 'dns:///localhost:9090'
+      negotiationType: PLAINTEXT
+
+logging:
+  level:
+    io:
+      grpc: INFO
+    br: INFO
